@@ -10,6 +10,8 @@ class Author(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
+    tracks = relationship("Track", back_populates="author")
+
 
 class Genre(Base):
     __tablename__ = "genre"
@@ -17,12 +19,16 @@ class Genre(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
+    tracks = relationship("Track", back_populates="genre")
+
 
 class Tag(Base):
     __tablename__ = "tag"
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+
+    tracks = relationship("Track", back_populates="tag")
 
 
 class Track(Base):
@@ -32,10 +38,10 @@ class Track(Base):
     name = Column(String)
 
     author_id = Column(Integer, ForeignKey("author.id"))
-    author = relationship("Author", back_populates="track")
+    author = relationship("Author", back_populates="tracks", lazy="immediate")
 
     genre_id = Column(Integer, ForeignKey("genre.id"))
-    genre = relationship("Genre", back_populates="track")
+    genre = relationship("Genre", back_populates="tracks", lazy="immediate")
 
     tag_id = Column(Integer, ForeignKey("tag.id"))
-    tag = relationship("Tag", back_populates="track")
+    tag = relationship("Tag", back_populates="tracks", lazy="immediate")

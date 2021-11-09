@@ -8,10 +8,26 @@ from app.db.base_class import Base  # noqa
 from app.models.models import Author, Genre, Tag, Track  # noqa
 
 
-def save(db: Any, data: Any) -> None:
+def save(db: Any, object: Any) -> None:
     try:
-        db.add(data)
+        db.add(object)
         db.commit()
-        db.refresh(data)
+        db.refresh(object)
+    except exc.SQLAlchemyError as e:
+        raise e
+
+
+def delete(db: Any, object: Any) -> None:
+    try:
+        db.delete(object)
+        db.commit()
+    except exc.SQLAlchemyError as e:
+        raise e
+
+
+def update(db: Any, object: Any) -> None:
+    try:
+        db.commit()
+        db.refresh(object)
     except exc.SQLAlchemyError as e:
         raise e

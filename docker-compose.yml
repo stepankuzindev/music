@@ -1,5 +1,15 @@
 version: "3.8"
 
+x-app-variables: &app-variables
+  - API_NAME=Music API
+  - SENTRY_DSN=
+
+  - POSTGRES_USER=postgres
+  - POSTGRES_PASSWORD=postgres
+  - POSTGRES_HOST=postgres
+  - POSTGRES_DB=postgres
+
+
 services:
   backend:
     build:
@@ -9,11 +19,18 @@ services:
     ports:
       - "8000:8000"
     command: >
-      bash -c "cd app &&
-      uvicorn main:app --reload --host 0.0.0.0 --port=8000"
+      bash -c "
+        alembic upgrade head &&
+        cd app &&
+        uvicorn main:app --reload --host 0.0.0.0 --port=8000
+      "
+    depends_on:
+      - postgres
+    environment: *app-variables
 
   postgres:
     image: postgres:12
+    environment: *app-variables
 
 volumes:
   postgres:
