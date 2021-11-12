@@ -54,3 +54,15 @@ def delete_track(
     db: Session = Depends(get_db),
 ) -> models.Track:
     return services.delete_track(db=db, track_id=track_id)
+
+
+@router.put(
+    "/{track_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def put_track(
+    track_id: int,
+    track: schemas.TrackIn,
+    db: Session = Depends(get_db),
+) -> None:
+    services.put_track(db=db, track=track, track_id=track_id)

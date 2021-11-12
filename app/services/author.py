@@ -51,3 +51,19 @@ def delete_author(
     models.delete(db=db, object=author)
 
     return author
+
+
+def put_author(
+    db: Session,
+    author: schemas.AuthorIn,
+    author_id: int,
+) -> None:
+    author_qs = db.query(models.Author).filter_by(id=author_id)
+    if not author_qs:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Not found Author with id = {author_id}",
+        )
+
+    author_qs.update(author.dict())
+    models.update(db=db)

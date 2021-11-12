@@ -51,3 +51,19 @@ def delete_genre(
     models.delete(db=db, object=genre)
 
     return genre
+
+
+def put_genre(
+    db: Session,
+    genre: schemas.GenreIn,
+    genre_id: int,
+) -> None:
+    genre_qs = db.query(models.Genre).filter_by(id=genre_id)
+    if not genre_qs:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Not found Genre with id = {genre_id}",
+        )
+
+    genre_qs.update(genre.dict())
+    models.update(db=db)

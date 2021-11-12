@@ -54,3 +54,15 @@ def delete_genre(
     db: Session = Depends(get_db),
 ) -> models.Genre:
     return services.delete_genre(db=db, genre_id=genre_id)
+
+
+@router.put(
+    "/{genre_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def put_author(
+    genre_id: int,
+    genre: schemas.GenreIn,
+    db: Session = Depends(get_db),
+) -> None:
+    services.put_genre(db=db, genre=genre, genre_id=genre_id)

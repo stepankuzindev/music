@@ -51,3 +51,19 @@ def delete_tag(
     models.delete(db=db, object=tag)
 
     return tag
+
+
+def put_tag(
+    db: Session,
+    tag: schemas.TagIn,
+    tag_id: int,
+) -> None:
+    tag_qs = db.query(models.Tag).filter_by(id=tag_id)
+    if not tag_qs:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Not found Tag with id = {tag_id}",
+        )
+
+    tag_qs.update(tag.dict())
+    models.update(db=db)

@@ -54,3 +54,15 @@ def delete_tag(
     db: Session = Depends(get_db),
 ) -> models.Tag:
     return services.delete_tag(db=db, tag_id=tag_id)
+
+
+@router.put(
+    "/{tag_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def put_tag(
+    tag_id: int,
+    tag: schemas.TagIn,
+    db: Session = Depends(get_db),
+) -> None:
+    services.put_tag(db=db, tag=tag, tag_id=tag_id)

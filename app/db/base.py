@@ -25,9 +25,8 @@ def delete(db: Any, object: Any) -> None:
         raise e
 
 
-def update(db: Any, object: Any) -> None:
+def update(db: Any) -> None:
     try:
         db.commit()
-        db.refresh(object)
     except exc.SQLAlchemyError as e:
         raise e

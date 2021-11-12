@@ -54,3 +54,15 @@ def delete_author(
     db: Session = Depends(get_db),
 ) -> models.Author:
     return services.delete_author(db=db, author_id=author_id)
+
+
+@router.put(
+    "/{author_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def put_author(
+    author_id: int,
+    author: schemas.AuthorIn,
+    db: Session = Depends(get_db),
+) -> None:
+    services.put_author(db=db, author=author, author_id=author_id)

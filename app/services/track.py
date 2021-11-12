@@ -51,3 +51,19 @@ def delete_track(
     models.delete(db=db, object=track)
 
     return track
+
+
+def put_track(
+    db: Session,
+    track: schemas.TrackIn,
+    track_id: int,
+) -> None:
+    track_qs = db.query(models.Track).filter_by(id=track_id)
+    if not track_qs:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Not found Track with id = {track_id}",
+        )
+
+    track_qs.update(track.dict())
+    models.update(db=db)
